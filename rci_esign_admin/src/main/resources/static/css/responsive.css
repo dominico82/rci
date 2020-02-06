@@ -1,0 +1,338 @@
+@charset "utf-8";
+
+/* =================================================================================
+* INFORMATION
+* -----------------------------------------------------------------------
+* @File Name: responsive.css
+* @Version: 1.0
+* @Create Date: 2017-01-24
+* @Update Date: N/A
+* @History: N/A
+* ================================================================================= */
+
+/* =============================================================================== */
+/* Custom Responsive                                                               */
+/* =============================================================================== */
+
+/* =============================================================================== */
+/* =============================================================================== */
+@media screen and (max-width:1280px){
+	.root {position:absolute;width:auto;}
+	.root .rootBack {width:100%;padding:0 10px;}
+	.rsws1 dl dd.titleChk input {width:100%;margin-bottom:5px;} /* 2018-04-12 */
+}
+/* pc 사이즈 경우 */
+@media screen and (min-width:769px){
+	.tab .btnPrev,
+	.tab .btnNext {display:none !important;}
+}
+@media screen and (max-width:1059px){
+	/* main */
+	.mainSwiper {padding:0 100px;}
+	.mainSwiper .btnPrevArea {padding-left:0;}
+	.mainSwiper .btnNextArea {padding-right:0;}
+}
+/* =============================================================================== */
+@media screen and (min-width:801px){
+	.snbCase:hover ol, .snbCase:hover dl {display:inline-block;}
+}
+/* 패드 세로모드 일부 */
+@media (max-width:1000px) and (min-width:768px) {
+	.rsls1.eventRsls .rsGird .rsItem.w180 {width:95px !important;}
+}
+/* =============================================================================== */
+/* 반응형 레이아웃 넓이 800 이하 일 경우 */
+@media screen and (max-width:800px){
+	.root {position:relative;width:100%;min-height:inherit;}
+	.contents {margin-top:0;}
+	.snbCase ol, .snbCase dl {position:relative;bottom:auto;left:0;border:none;padding:5px 0 5px 0;box-shadow:none;background:#eceef2 url("../images/bg_mobile_snb.png") repeat-x;}
+	.snbCase ol li, .snbCase dl dd {box-sizing:border-box;width:100%;}
+	.snbCase ol li a, .snbCase dl dd a {padding:8px 12px 8px 36px;}
+	.gnb6.snbCase ol, .gnb6.snbCase dl {bottom:auto;}
+	/**/
+	#container .head h2 {padding:0;}
+	#container .head .rBtn.PcBtn {display:none;}
+	#container .head .rBtn.MrBtn {display:inline-block;}
+	.head .rBtn {top:56px;right:14px;background: #21c5da;}
+	.head .btnMy {position:absolute;top:-56px;right:2px;margin-right:0;background:url("../images/icon_header_my2.png") no-repeat right 15px;}
+	.head .btnMy button {width:55px;padding-right:20px;cursor:pointer;}
+	.head .btnMy button:after {right:17px;}
+	.head .myName {display:none;line-height:34px;font-size:12px;/* color:#e86a6a; */}
+	.head .myName span {font-size:12px;/* color:#e86a6a; */}
+	.head .goGnb {display:none;} /* 2017-06-09 */
+	.head .rBtn.on {padding:0 15px;width:90px;border:2px solid #e86a6a;border-top:0;}
+	.head .rBtn.on .btnMy {right:0;background-position:right -35px;}
+	.head .rBtn.on .myName,
+	.head .rBtn.on input[type="button"].btnSettings,
+	.head .rBtn.on input[type="button"].btnLogout {display:block;}
+	.head .rBtn.on .goGnb {display:inline-block;margin-left:10px;} /* 2017-06-09 */
+	.root {left:0;}
+	/*.root .left.longCase {display:inline-block;width:100%;padding:7px 0 0;}*/
+	/* main */
+	.mainCase .topBox {padding:15px;}
+	.mainCase .topBox .volunteer {width:auto;}
+	.mobileVer {display:block;}
+	.pcVer {display:none;}
+	/**/
+	.gridSet.gridFull .gI-25 {display:block;width:100%;padding:0 !important;margin-bottom:10px;}
+	.rsls1 {padding:0 0;}
+	.rsws1 .rswSet dt {font-weight:bold;}
+	/**/
+	.listCase table.tbvs1 td span.title {display:block;width:100%;margin-bottom:10px;}
+	.listCase table.tbvs1 td>span {display:block;width:100%;}
+	.bBBtn {margin:5px;}
+	.comLayout h3 strong {font-weight:bold;}
+	.dataBox .tit h4 {font-weight:bold;}
+	/* 입력폼 */
+	.h3Back {padding:0 0;}
+	.tab-con .rsws1 {padding:0;}
+	.tab-con .rsws1 .gridItem.gI-10 {padding:0;}
+	.tableTopBack {padding:10px 10px 0;}
+	/* slider */
+	.contents .sliderPager:before {content:"";display:block;position:absolute;top:0;left:-10px;z-index:2;width:50px;height:100%;background:url("../images/bg_whiteShadow2.png") repeat-y;background-size:100% 100%;}
+	.contents .sliderPager:after {content:"";display:block;position:absolute;top:0;right:-10px;z-index:2;width:50px;height:100%;background:url("../images/bg_whiteShadow.png") repeat-y;background-size:100% 100%;}
+	.contents .sliderPager.pagerLeft:before,
+	.contents .sliderPager.pagerRight:after {display:none;}
+	/**/
+	.viewMember.prev {left:10px;}
+	.viewMember.next {right:10px;}
+	/**/
+	.screenList li {display:table;width:100%;padding:0 10px 20px;}
+	/**/
+	.sliderView .fileList {position:relative;width:100%;margin-bottom:10px;}
+	.sliderView .fileList .btnArea {position:relative;}
+	.sliderView .youthSlider {padding:0;}
+	/**/
+	#error {width:auto;top:50px;bottom:50px;left:20px;right:20px;margin:0;overflow-y:auto;}
+}
+/* =============================================================================== */
+/* 반응형 디바이스 (Tab, Tablet) 넓이 768 이하 일 경우 */
+@media screen and (max-width:768px){
+	.rsls1 .hideCol2 {display:none !important;}
+	/* .rsws1 {padding:10px 0;} */
+	.rsws1 .gridItem {display:table;width:100%;}
+	.rsws1 .gridItem.gI-5 {padding:0 10px;}
+	.rsws1 .gridItem.gI-5:first-child {border-right:none;}
+	.rsws1 .rswSet .wLong {width:100%;}
+	.rsws1 .gridSet.boxSet .gridItem {display:inherit;width:inherit;}
+	.rsws1 dl dt.cCase {border-left:none;}
+	.rsvs1 table tbody td {padding:0 8px;}
+	.rsvs1 table tbody td .bbBox {font-size:15px;}
+	.listSort span {padding:0 6px;}
+	.dataBox {padding: 0 10px 10px;}
+	/**/
+	.exhibitTop {margin-top:0;padding:5px 10px 10px;}
+	/* Tab */
+	.tab span.on a, 
+	.tab span.on input[type="button"] {font-weight:bold;}
+	.tab .btnNext {display:block;}
+	.loginForm {padding:10% 0;}
+	.loginKind {padding:0 0 30px;}
+	.loginKind span {display:inline-block;margin:5px 0;}
+	.loginForm p {margin-top:25px;}
+	/**/
+	.youthCase .rsws1 .rswSet dt {font-weight:500;}
+	.youthCase .rsws1 .gridItem.gI-5 {padding:0;}
+	.youthCase .entrySet .gridSet {padding-right:0}
+	.youthCase .entrySet .btnRight {position:relative;}
+	.youthCase .entrySet .btnRight input {margin:0 0 10px 0;}
+	.youthCase dl dd:last-child .entrySet .btnRight input:first-child {margin-left:0;margin-right:5px;}
+	/**/
+/* =============================================================================== */
+/* 디바이스(iPhone 6 plue 가로모드 기준) 넓이 736 이상 일 경우 */
+@media screen and (min-width:737px){
+	.boardTop .list-search {display:inline-block;}
+	.boardTop .search-v {display:none;}
+	.boardTop .searchBox {display:none;}
+}
+/* =============================================================================== */
+/* 디바이스(iPhone 6 plue 가로모드 기준) 넓이 736 이하 일 경우 */
+@media screen and (max-width:736px){
+	html, body, * {font-size:14px;}
+	/**/
+	.contents {padding:10px 10px 10px}
+	.loginForm h1 {padding:0 10px;}
+	.loginForm .visitantType {padding:0 10px;}
+	/* list : 반응형 목록 */
+	.hideCol {display:none !important;}
+	.rsls1 .rsGird {position:relative;display:inline-block;text-align:left;}
+	.rsls1 .rsGird .rsItem {display:inline-block;width:auto;text-align:left;color:#373737;}
+	.rsls1 .rsGird .rsItem.rs100 {width:100% !important;}
+	.rsls1 .rsGird .rsItem.rsTit {width:100%;font-weight:bold;}
+	.rsls1 .rsGird .rsItem.rsDate {width:100%;color:#878787;}
+	.rsls1 .rsGird .rsItem.rsView {padding-left:10px;}
+	.rsls1 .rsGird .rsItem.rsView:before {content:'';display:inline-block;width:1px;height:12px;margin-right:10px;background:#878787;vertical-align:middle;}
+	.rsls1 .rsGird .rsItem.rsTerm {width:100%;}
+	.rsls1 .rsGird .rsItem.rsState {width:100%;}
+	.rsls1 table thead .rsItem.hideCol2 {display:inline-block !important;}
+	.rsls1 table thead .rsGird {text-align:center;}
+	.rsls1 table thead .rsItem span {display:inline-block;}
+	.rsls1 table thead .rsItem span.showCol {display:none;}
+	.rsls1 table tbody span.showCol {display:inline-block;/* font-size:88% !important; */padding-right:3px;color:#373737;font-size:12px;} /* 2018-03-29 font size */
+	.rsls1 table tbody .rsdate {font-size:93%;}
+	.rsls1 table tbody .lLine {margin-left:5px;padding:0 5px;border-left:1px solid #ddd;}
+	.rsls1 .rsGird .rsItem.rsSubject {clear:left;padding:5px 0;width:100%;border-left:none;display:-webkit-box;}
+	.rsls1 table tbody .rsTerm {text-align:left;}
+	.rsls1 table tbody .rsTerm div {font-size:93%;display:inline-block;}
+	.rsls1.adminRsls .rsGird .rsItem.rsTit {text-align:left;}
+	.rsls1.eventRsls .rsGird .rsItem.w180 {width:inherit;}
+	.rsMleft {padding-left:5px;}
+	.hideCol3 {display:none !important}
+	/**/
+	.gridSet {display:inline-block;width:100%;}
+	.gridItem {display:inline-block;}
+	/**/
+	.boardTop .list-search {display:none;}
+	.boardTop .search-v {display:inline-block;}
+	.box .boxT {padding:13px 10px;}
+	.box .boxB {padding:10px 10px;}
+	.rsvsPN dt {padding:0;}
+	.rsls1 .sortArea {border:1px solid #e7ebeb;border-bottom:0;background:#fff;}
+	.rsws1 dl dt {display:inline-block;width:100%;padding:10px 10px;border-right:0;border-bottom:1px dotted #e5e5e5;box-sizing:border-box;}
+	.rsws1 dl dd {display:inline-block;width:100%;box-sizing:border-box;}
+	.rsws1 dl dd .ftRed.ml10.ft12 {clear:left;display:inline-block;width:100%;padding:8px 10px 0 0;box-sizing:border-box;}
+	.rsws1 dl dd .ft12 {clear:left;display:inline-block;width:100%;padding:8px 10px 0 0;box-sizing:border-box;}
+	.rsws1 .girdItem:last-child {border-top:1px solid #e5e5e5;}
+	.qnaAnswer .boxB h3 {padding-bottom:10px;}
+	.rsvs1 .viewDivision {display:inline-block;width:100%;padding:0 0 10px;box-sizing:border-box;}
+	.conView .rsws1 dl dt {width:100%;}
+	.conView .conBox {border-left:1px solid #e7ebeb;}
+	
+	/*.boardTop .right {margin-right:40px;}
+	.boardTop .list-search {position:absolute;right:0 !important;top:0;margin-right:0;}
+	.boardTop .list-search span {position:absolute;right:0 !important;top:13px;display:inline-block !important;}
+	.boardTop .right .selectSet {display:none;}
+	.boardTop .highBox .selectSet {display:block;}
+	.boardTop .calArea {display:none;}
+	.boardTop .right button {display:none;}
+	.boardTop .list-search div input[type="text"] {padding: 0 28px 0 28px;}
+	.boardTop .list-search div {display:none;position:relative;z-index:10;top:10px;left:0;margin-right:10px;}
+	.boardTop .list-search div .search-icon {left:0;right:auto;}
+	.boardTop .list-search div .search-close {display:inline-block;right:2px;top:5px;}
+	.boardTop .left .btnSet, .boardTop .left.btnSet {width:35px;}
+	.boardTop .left .btnSet *, .boardTop .left.btnSet * {padding-left:50px;}*/
+	/**/
+	.txtEllipsis {padding:3px 0 3px;color:#878787 !important;text-overflow:clip; white-space:initial; overflow:visible;}
+	.w120 .txtEllipsis {padding:5px 0 3px;width:auto;}
+	.w200 .txtEllipsis {width:auto;}
+	.nameCol:before {margin:0 8px 0 5px;content:"/";display:inline-block;}
+	.nameCol:after {margin:0 8px 0 5px;content:"/";display:inline-block;}
+	.btnBox {padding:10px 0;}
+	/**/
+	.popPro .list {max-height:80%;}
+	/* setCase */
+	.setCase .rsls1 .rsGird .rsItem {width:100%;}
+	.setCase .rsls1 .rsGird .checkArea {float:right;margin-top:0;}
+	.setCase .rsls1 .rsGird .rsItem button {display:block;margin-bottom:10px;}
+	.setCase tr td.delBox {width:60px;}
+	
+	.setCase .gridItem {width:100%;}
+	.setCase .tab-con1 table td input {width:100%;}
+	.setCase .tab-con1 table td span {width:100%;margin:5px 0 0 0;}
+	.setCase .tab-con1 table td div span {width:auto;margin:0 0 0 10px;}
+	/**/
+	.popLoad .popData>div {position:absolute;left:50%;top:50%;margin:-50px 0 0 -100px;} /* 2018-03-01 로딩팝업 */
+	/**/
+	.gridSet.youthCase .gridItem {width:100%;} /* 2018-03-29 */
+	/**/
+	.conView .tab-con1 .gridItem {border-left:none;}
+	.conView .tab-con1 .gridItem input {width:100% !important;}
+	.conView .conBox .gridSet .gridItem .gridItem {width:100%;}
+	.conView .conBox .gridSet .gridItem .gridItem:first-child {border-right:none;border-left:none;}
+	/**/
+	.youthInput .sTxt li {width:100%;padding:0 0 10px;}
+	.youthInput .sTxt li:nth-child(2n+2) {padding:0 0 10px;}
+	
+}
+/* =============================================================================== */
+/* 디바이스(iPhone 5 기준) 넓이 568 이하 일 경우  */
+@media screen and (max-width:568px){
+	/* common */
+	.smBlock {display:block;}
+	/* main */
+	.mainResult .degree li {float:none;margin-top:10px;padding-left:0;width:auto;}
+	.mainResult .degree li:first-child {margin-top:0;width:auto;}
+	.boardTop {padding:0 0 5px 0;}
+	.boardTop .right .listSort {padding-top:11px;}
+	.boardTop .right .selectSet {float:right;}
+	.boardTop .table {display:table;width:100%;text-align:left;}
+	.boardTop .table .cell {display:table-cell;vertical-align: middle;}
+	.dataBox .tit p {padding:10px 0 10px;}
+	.lineBox .bBBtn,
+	.lineBox .bRBtn {margin:5px 5px;}
+	.termSort {clear:left;border:none;}
+	/**/
+	.txtSet div {display:inline-block;width:100%;}
+	.telSet div {display:inline-block;width:100%;padding-right:0;margin-bottom:5px;}
+	.txtSet div label {display:inline-block;margin-bottom:5px;}
+	.addSet div {display:inline-block;width:100%;}
+	.addSet div label {display:inline-block;margin-bottom:5px;}
+	.addArea div.detail {margin-left:0;}
+	.addSet div:nth-child(3) {display:inline-block;width:auto;}
+	.addArea button {margin-top:5px;}
+	.commonPop {width:auto;top:50px;bottom:50px;left:20px;right:20px;padding-bottom:0;margin:0;}
+	.commonPop.alertPop {width:auto;left:5%;right:5%;top:50%;bottom:50%;margin:-150px 0 -150px 0;}
+	.commonPop.alertPop .popHeader {position:absolute;top:0;left:0;width:100%;}
+	.commonPop .popHeader {position:fixed;left:20px;right:20px;top:50px;z-index:4000;}
+	.commonPop .popData {max-height:100%;}
+	.commonPop .popBtn {z-index:4000;}
+	.popData {position:absolute;top:50px;bottom:60px;left:0;right:0;}
+	.popLoad {top:150px;bottom:150px;} /* 2018-03-01 로딩팝업 */
+	.popLoad .popData>div {position:absolute;left:50%;top:50%;margin:-50px 0 0 -100px;} /* 2018-03-01 로딩팝업 */
+	.tbvs1 .radioSet {margin-bottom:5px;}
+	.tbvs1 em {display:block;margin-top:5px;}
+	.rsvs1 .viewInfo {float:left;display:inline-block;width:100%;padding:5px 0 0 ;}
+	/* 2018-04-13 by hr-park */
+	.rsvs1 .viewInfo>span {width:100%;padding:0 !important;text-align:left;}
+	.rsvs1 .viewInfo>span:after {display:none;}
+	.rsvs1 .viewInfo>span .modifyInfo {margin:5px 0;}
+	/* end 2018-04-13 by hr-park */
+	/* setCase */
+	.setCase .tab-con1 table td input {width:100%;}
+	.setCase .tab-con1 table td span,
+	.setCase .tab-con1 table td div span {width:100%;margin:5px 0 0 0;}
+	.setCase .dboxeT .w400 {width:100%;margin-top:5px;} 
+	/**/
+	.youthInput .line2 dl {float:none;width:100%;}
+	.youthInput .line2 dl:last-child {float:none;padding-right:10px;}
+}
+/* =============================================================================== */
+/* 디바이스(iPhone 6+ 이하 기준) 넓이 414 이하 일 경우 */
+@media screen and (max-width:414px){
+	.btnS {width:70px;}
+	input.cal {width:120px;padding:5px 30px 5px 5px;margin-right:0 !important;text-align:center;} /* 2018-03-02 */
+	.listCase .btnBox button {width:auto;}
+	.listCase .fileBox span {display:block;margin-bottom:5px;}
+	div.paginate a {padding:0 6px;}
+	.mailSet {display:inline-block;}
+	.mailSet>span:last-child {display:block;width:100%;margin-top:5px;}
+	.mailSet>span:nth-child(1) {width:50%;}
+	.mailSet>span:nth-child(3) {width:50%;padding-right:0;}
+	.setCase .imageArea .bnThum>span {margin:0 10px 5px 0;}
+	#container .head h2 strong {font-size:20px;}
+	#container .head .rBtn .btnHome {width:36px;}
+	#container .head .rBtn .btnLogout {width:36px;}
+	#container .head .rBtn .btnSite {width:36px;}
+	.root .pagePos {display:none;}
+}
+/* =============================================================================== */
+/* 디바이스(iPhone 4 기준) 넓이 359 이하 일 경우  */
+@media screen and (max-width:359px){
+	div.paginate a {min-width:10px;}
+	/* #container .head .rBtn {padding-right:0;} */
+	#container .head .rBtn div span:before {margin:0 3px;}
+	#container .head h2 strong {font-size:18px;}
+	/**/
+	.tab span a, .tab span input[type="button"] {padding:0 8px;}
+}
+/* =============================================================================== */
+/* 모바일 가로모드 */
+@media (max-height:414px) and (max-width:736px) {
+	.commonPop {width:auto;top:20px;bottom:20px;left:20px;right:20px;padding-bottom:0;margin:0;}
+	.commonPop .popData {position:absolute;top:50px;bottom:60px;left:0;right:0;}
+}
+/* =============================================================================== */
+/* 가로모드(landscape) */
+@media screen and (orientation : landscape) {
+	.root .pagePos {display:none;}
+}

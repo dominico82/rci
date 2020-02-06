@@ -1,0 +1,73 @@
+#프로젝트에서 사용되는 Properties 설정
+#profiles 구분은 --- 로 구분
+#띄어쓰기/들여쓰기 규칙 지켜야 함
+#다중 값을 설정하고 싶다면 - 로 구분지어서 리스트 처리(mapper-locations 참조)
+spring:
+  profiles:
+    active: dev
+  mvc: 
+    view: 
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  messages:
+    always-use-message-format: false
+    cache-duration: -1
+    basename: i18n/message
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS      
+server:
+  tomcat:
+    uri-encoding: UTF-8
+
+---
+#dev
+spring:
+  profiles: dev
+  datasource: 
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@dev.think-tree.co.kr:2915/orcl
+    username: esign
+    password: esign135
+mybatis: 
+  mapper-locations:
+    - classpath:kr/co/rci/esign/admin/dao/mapper/*Mapper.xml
+server:
+#  address: localhost
+  port: 8000
+  fullAdd: http://localhost:8000
+  domain: http://localhost:${server.port}
+esign: 
+  log: 
+    dir: /home/rci/logs/
+    lowlimit: debug
+phantomDir: /home/rci/
+screenshotDir: /home/rci/screenshot/
+logging: 
+  file: /home/rci
+---
+#product
+spring:
+  profiles: prod
+  datasource: 
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@dev.think-tree.co.kr:2915/orcl
+    username: esign
+    password: esign135
+mybatis: 
+  mapper-locations:
+    - classpath:kr/co/rci/esign/admin/dao/mapper/*Mapper.xml
+server:
+  address: localhost  
+  port: 8000
+  fullAdd: http://localhost:8000
+esign: 
+  log: 
+    dir: /home/rci/logs/
+    lowlimit: info    
+phantomDir: /home/rci/

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.rci.esign.admin.dao.CodeMapper">
+
+	<select id="selectCodeGrp" resultType="kr.co.rci.esign.admin.domain.CodeBean" >
+		SELECT * FROM
+		TB_CODE_GRP
+	</select>
+
+	<select id="selectCode" resultType="kr.co.rci.esign.admin.domain.CodeBean" parameterType="kr.co.rci.esign.admin.domain.CodeBean" >
+		SELECT * FROM 
+		TB_CODE
+		WHERE 1=1
+		AND CODE_ID = #{grpId}
+	</select>
+</mapper>

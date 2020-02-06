@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 관리자 SQL Mapper -->
+<mapper namespace="kr.co.rci.esign.admin.dao.ContentsMapper">
+
+	<update id="deleteMainImageInfo">
+		/* [ContentsMapper.xml][ContentsMapper.deleteMainImageInfo][메인이미지삭제] */
+		DELETE FROM TB_MAIN_IMAGE
+	</update>
+
+	<update id="updateMainImageInfo" parameterType="kr.co.rci.esign.admin.domain.ContentsBean">
+		/* [ContentsMapper.xml][ContentsMapper.updateMainImageInfo][메인이미지저장] */
+		INSERT INTO TB_MAIN_IMAGE (MO_IMG_FILE_NO, PC_IMG_FILE_NO, REG_DT, REG_NO, MOD_DT, MOD_NO)
+		VALUES (#{moImgFileNo}, #{pcImgFileNo}, SYSDATE, #{regNo}, SYSDATE, #{regNo})
+	</update>
+
+	<select id="getMainImageInfo" parameterType="kr.co.rci.esign.admin.domain.ContentsBean" resultType="kr.co.rci.esign.admin.domain.ContentsBean">
+		/* [ContentsMapper.xml][ContentsMapper.getMainImageInfo][메인이미지정보] */
+		SELECT MO_IMG_FILE_NO
+		     , PC_IMG_FILE_NO
+		  FROM TB_MAIN_IMAGE
+	</select>
+
+	<select id="getNoticeList" parameterType="kr.co.rci.esign.admin.domain.ContentsBean" resultType="kr.co.rci.esign.admin.domain.ContentsBean">
+		/* [ContentsMapper.xml][ContentsMapper.getNoticeList][공지사항리스트] */
+		SELECT *
+		FROM POST
+		WHERE 1=1
+		AND BBS_CD = 'notice'
+		<if test='ctbean.startDate != null and ctbean.startDate != "" '>
+		 AND START_DATE ctbean.isNoti != #{ctbean.startDate}
+		</if>
+		 <if test='ctbean.endDate != null and ctbean.endDate != "" '>
+		 AND END_DATE <![CDATA[ <= ]]> #{ctbean.endDate}
+		 </if>
+	 	<!--  <if test='ctbean.isNoti != null and ctbean.isNoti != "" '>
+		 AND (IS_NOTI <![CDATA[ = ]]> #{ctbean.isNoti})
+		 </if>
+ -->
+		 <if test='ctbean.searchWord != null and ctbean.searchWord != ""'>
+		 AND (TITLE LIKE #{ctbean.searchWord, jdbcType=VARCHAR} || '%')
+		 </if>
+		 ORDER BY POST_NO DESC
+		OFFSET #{pageable.offset} ROWS FETCH NEXT #{pageable.pageSize} ROWS ONLY
+	</select>
+
+
+	<select id="getNoticeTotalCount" parameterType="kr.co.rci.esign.admin.domain.ContentsBean" resultType="int">
+		/* [UserMapper.xml][UserMapper.getNoticeTotalCount][공지글전체카운트] */
+		SELECT COUNT(*)
+		FROM POST
+		WHERE POST_NO <![CDATA[ > ]]> 0
+		AND BBS_CD = 'notice'
+		 <if test='ctbean.startDate != null and ctbean.startDate != "" '>
+		 AND START_DATE <![CDATA[ >= ]]> #{ctbean.startDate}
+		 </if>
+		 <if test='ctbean.endDate != null and ctbean.endDate != "" '>
+		 AND END_DATE <![CDATA[ <= ]]> #{ctbean.endDate}
+		 </if>
+		<!--  <if test='ctbean.isNoti != null and ctbean.isNoti != "" '>
+		 AND (IS_NOTI <![CDATA[ = ]]> #{ctbean.isNoti})
+		 </if>
+ -->
+		 <if test='ctbean.searchWord != null and ctbean.searchWord != ""'>
+		 AND (TITLE LIKE #{ctbean.searchWord, jdbcType=VARCHAR} || '%')
+		 </if>
+	</select>
+
+	<insert id="insertBoard" >
+		INSERT INTO
+		POST(
+		 POST_NO
+		, TITLE
+		, CONT
+		, AUTH
+		, IS_NOTI
+		, REG_DT
+		, IS_USE
+		, BBS_CD
+		, START_DATE
+		, START_HH
+		, START_MI
+		, END_DATE
+		, END_HH
+		, END_MI
+		, POPUP_USE_YN
+		)
+		VALUES(
+		(SELECT NVL(MAX(POST_NO)+1) FROM POST),
+		, #{title}
+		, #{cont}
+		, #{auth}
+		, #{isNoti}
+		, #{regDt}
+		, #{isUse}
+		, #{bbsCd}
+		, #{startDate}
+		, #{startHh}
+		, #{startMi}
+		, #{endDate}
+		, #{endHh}
+		, #{endMi}
+		, #{popupUseYn}
+		)
+	</insert>
+
+	<update id="updateBoard">
+	UPDATE POST SET
+		TITLE = #{title}
+		, CONT = #{cont}
+		, AUTH = #{auth}
+		, IS_NOTI #{isNoti}
+		, REG_DT = #{regDt}
+		, IS_USE = #{isUse}
+		, BBS_CD = #{bbsCd}
+		, START_DATE = #{startDate}
+		, START_HH = #{startHh}
+		, START_MI = #{startMi}
+		, END_DATE = #{endDate}
+		, END_HH = #{endHh}
+		, END_MI = #{endMi}
+		, POPUP_USE_YN = #{popupUseYn}
+	WHERE
+	POST_NO = #{postNo}
+	</update>
+
+	<delete id="deleteBoard">
+		DELETE FROM
+		POST
+		WHERE POST_NO = #{postNo}
+	</delete>
+
+	<select id="selectNoticeByNo" parameterType="kr.co.rci.esign.admin.domain.ContentsBean" resultType="kr.co.rci.esign.admin.domain.ContentsBean">
+		/* [ContentsMapper.xml][ContentsMapper.selectNoticeByNo][공지사항리스트] */
+		SELECT *
+		FROM POST
+		WHERE POST_NO = #{postNo}
+		AND BBS_CD = 'notice'
+	</select>
+
+
+	<select id="getFaqList" parameterType="kr.co.rci.esign.admin.domain.ContentsBean" resultType="kr.co.rci.esign.admin.domain.ContentsBean">
+		/* [ContentsMapper.xml][ContentsMapper.getFaqList][질문답변리스트] */
+		SELECT *
+		FROM POST
+		WHERE 1=1
+		AND BBS_CD = 'faq'
+		<if test='ctbean.startDate != null and ctbean.startDate != "" '>
+		 AND START_DATE <![CDATA[ >= ]]> #{ctbean.startDate}
+		</if>
+		 <if test='ctbean.endDate != null and ctbean.endDate != "" '>
+		 AND END_DATE <![CDATA[ <= ]]> #{ctbean.endDate}
+		 </if>
+		 <if test='ctbean.searchWord != null and ctbean.searchWord != ""'>
+		 AND (TITLE LIKE #{ctbean.searchWord, jdbcType=VARCHAR} || '%')
+		 </if>
+		 ORDER BY POST_NO DESC
+		OFFSET #{pageable.offset} ROWS FETCH NEXT #{pageable.pageSize} ROWS ONLY
+	</select>
+
+	<select id="getFaqTotalCount" parameterType="kr.co.rci.esign.admin.domain.ContentsBean" resultType="int">
+		/* [UserMapper.xml][UserMapper.getFaqTotalCount][질문답변전체카운트] */
+		SELECT COUNT(*)
+		FROM POST
+		WHERE POST_NO <![CDATA[ > ]]> 0
+		AND BBS_CD = 'faq'
+		 <if test='ctbean.startDate != null and ctbean.startDate != "" '>
+		 AND START_DATE <![CDATA[ >= ]]> #{ctbean.startDate}
+		 </if>
+		 <if test='ctbean.endDate != null and ctbean.endDate != "" '>
+		 AND END_DATE <![CDATA[ <= ]]> #{ctbean.endDate}
+		 </if>
+		 <if test='ctbean.searchWord != null and ctbean.searchWord != ""'>
+		 AND (TITLE LIKE #{ctbean.searchWord, jdbcType=VARCHAR} || '%')
+		 </if>
+	</select>
+
+
+	<select id="getGuideList" parameterType="kr.co.rci.esign.admin.domain.ContentsBean" resultType="kr.co.rci.esign.admin.domain.ContentsBean">
+		/* [ContentsMapper.xml][ContentsMapper.getFaqList][질문답변리스트] */
+		SELECT *
+		FROM POST
+		WHERE 1=1
+		AND BBS_CD = 'guide'
+		<if test='ctbean.startDate != null and ctbean.startDate != "" '>
+		 AND START_DATE <![CDATA[ >= ]]> #{ctbean.startDate}
+		</if>
+		 <if test='ctbean.endDate != null and ctbean.endDate != "" '>
+		 AND END_DATE <![CDATA[ <= ]]> #{ctbean.endDate}
+		 </if>
+		 <if test='ctbean.searchWord != null and ctbean.searchWord != ""'>
+		 AND (TITLE LIKE #{ctbean.searchWord, jdbcType=VARCHAR} || '%')
+		 </if>
+		 ORDER BY POST_NO DESC
+		OFFSET #{pageable.offset} ROWS FETCH NEXT #{pageable.pageSize} ROWS ONLY
+	</select>
+
+	<select id="getGuideTotalCount" parameterType="kr.co.rci.esign.admin.domain.ContentsBean" resultType="int">
+		/* [UserMapper.xml][UserMapper.getFaqTotalCount][질문답변전체카운트] */
+		SELECT COUNT(*)
+		FROM POST
+		WHERE POST_NO <![CDATA[ > ]]> 0
+		AND BBS_CD = 'guide'
+		 <if test='ctbean.startDate != null and ctbean.startDate != "" '>
+		 AND START_DATE <![CDATA[ >= ]]> #{ctbean.startDate}
+		 </if>
+		 <if test='ctbean.endDate != null and ctbean.endDate != "" '>
+		 AND END_DATE <![CDATA[ <= ]]> #{ctbean.endDate}
+		 </if>
+		 <if test='ctbean.searchWord != null and ctbean.searchWord != ""'>
+		 AND (TITLE LIKE #{ctbean.searchWord, jdbcType=VARCHAR} || '%')
+		 </if>
+	</select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+	<tlib-version>1.0</tlib-version>
+	<short-name>rci</short-name>
+
+	<function>
+		<description>
+			입력 받은 데이터 크기를 데이터 단위 변환
+			@param : number
+		</description>
+		<name>tranBytes</name>
+		<function-class>kr.co.rci.esign.admin.taglib.CommonTagFunction</function-class>
+		<function-signature>java.lang.String tranBytes(int)</function-signature>
+	</function>
+
+	<function>
+		<description>공지사항 구분</description>
+		<name>nGubn</name>
+		<function-class>kr.co.rci.esign.admin.taglib.RciTagFunction</function-class>
+		<function-signature>java.lang.String noticeGubn( java.lang.String )</function-signature>
+	</function>
+
+	<function>
+		<description>공지사항 카테고리</description>
+		<name>nCate</name>
+		<function-class>kr.co.rci.esign.admin.taglib.RciTagFunction</function-class>
+		<function-signature>java.lang.String noticeCategory( java.lang.String )</function-signature>
+	</function>
+
+	<function>
+		<description>firm name format</description>
+		<name>dispFileFormat</name>
+		<function-class>kr.co.rci.esign.admin.taglib.RciTagFunction</function-class>
+		<function-signature>java.lang.String dispFileFormat( java.lang.String, long )</function-signature>
+	</function>
+
+	<function>
+		<description>증빙자료 참조파일 번호를 받아, 해당 증빙자료 이름을 반환합니다.</description>
+		<name>referenceName</name>
+		<function-class>kr.co.rci.esign.admin.util.ContractUtils</function-class>
+		<function-signature>java.lang.String documentName( java.lang.String )</function-signature>
+	</function>
+</taglib>

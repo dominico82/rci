@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<property resource="application.yml"/>
+
+    <!--
+    *********************************************************************
+    *   Appender Types Setting
+    *********************************************************************
+    -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{YY:HH:mm:ss.SSS} [%-5level] %logger{360}.%M\(\) - %msg%n</Pattern>
+		</layout>
+	</appender>
+
+	<!-- 관리자 로그인 이력 -->
+	<appender name="USER-LOG-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender" includeLocation="true">
+		<file>${default.log.dir}login_log.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${default.log.dir}login_log/login_log.%d{yyyyMMdd}.log</fileNamePattern>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%c{1}] : %m %n</pattern>
+		</layout>
+	</appender>
+
+	<!--
+	*********************************************************************
+	*	System Service Log Setting
+	*********************************************************************
+	-->
+	<logger name="org.apache"			level="error"/>
+	<logger name="org.hibernate"			level="error"/>
+	<logger name="org.mybatis.spring"	level="error"/>
+	<logger name="org.springframework.web.servlet"	level="error"/>
+
+    <logger name="org.springframework"	level="info" />
+	<logger name="jdbc" level="OFF" />
+
+	<logger name="jdbc.sqlonly" level="OFF" />
+	<logger name="jdbc.sqltiming" level="${esign.log.lowlimit}" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<logger name="jdbc.resultsettable" level="${esign.log.lowlimit}" />
+	<logger name="jdbc.connection" level="OFF" />
+
+	<!--
+	*********************************************************************
+	*	Project Controller Log Setting
+	*********************************************************************
+	-->
+
+	<logger name="kr.co.rci.admin" level="${esign.log.lowlimit}" />
+
+	<!-- 관리자 로그인 -->
+	<logger name="LOGIN-LOG" level="${esign.log.lowlimit}">
+		<appender-ref ref="USER-LOG-FILE"/>
+	</logger>
+
+	<root level="${esign.log.lowlimit}">
+		<appender-ref ref="STDOUT" />
+		<!-- <appender-ref ref="FILEOUT_DAILY" /> -->
+	</root>
+</configuration>

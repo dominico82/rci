@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 관리자 SQL Mapper -->
+<mapper namespace="kr.co.rci.esign.admin.dao.AdminMapper">
+
+	<!-- 관리자 정보 조회 -->
+	<select id="loginAuthentication" parameterType="kr.co.rci.esign.admin.domain.AdminBean" resultType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.loginAuthentication][2019.01.22] */
+		SELECT ADMIN_NO
+		     , ADMIN_ID
+		     , PASSWORD
+		     , REAL_NAME
+		     , LAST_LOGIN
+		     , ADMIN_EMAIL
+		     , ADMIN_HP1
+		     , ADMIN_HP2
+		     , ADMIN_HP3
+		     , ROLE_TP_CD
+		     , ENABLED
+		  FROM TB_ADMIN
+		 WHERE ADMIN_ID = #{adminId}
+	</select>
+
+	<select id="selectAdminAuthorities" parameterType="kr.co.rci.esign.admin.domain.AdminBean" resultType="kr.co.rci.esign.admin.domain.AdminAuthBean">
+		/* [AdminMapper.xml][AdminMapper.selectAdminAuthorities][2019.01.22] */
+		SELECT RD.AUTHORITY
+		     , RD.ROLE_NAME
+		     , RD.DESCRIPTION
+		  FROM TB_ADMIN_ROLE R
+		  LEFT JOIN TB_ADMIN_ROLE_DEF RD
+			ON R.AUTHORITY = RD.AUTHORITY
+		 WHERE R.ADMIN_ID = #{adminId}
+	</select>
+
+	<insert id="insertLoginLog" parameterType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.insertLoginLog][2019.01.22] */
+		INSERT INTO TB_ADMIN_LOGIN_LOG
+		VALUES (#{adminId}, SYSDATE, #{resultCode})
+	</insert>
+
+
+	<update id="updateLastLogin" parameterType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.updateLastLogin][2019.01.22] */
+		UPDATE TB_ADMIN
+		   SET LAST_LOGIN = SYSDATE
+		 WHERE ADMIN_ID = #{adminId}
+	</update>
+
+	<update id="pwChange" parameterType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminCommonMapper.xml][AdminCommonMapper.pwChange] */
+		UPDATE TB_ADMIN
+		   SET PASSWORD = #{password}
+		 WHERE ADMIN_ID = #{adminId}
+	</update>
+
+	<!-- secret Cd 조회 -->
+	<select id="selectSecretCd" parameterType="String" resultType="String">
+		/* [AdminMapper.xml][AdminMapper.selectSecretCd][2019.01.22] */
+		SELECT SECRET_CD
+		  FROM TB_ADMIN
+		 WHERE ADMIN_ID = #{adminId}
+	</select>
+
+	<update id="setUserSecretCd" parameterType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.setUserSecretCd][2019.01.22] */
+		UPDATE TB_ADMIN
+		   SET SECRET_CD = #{encodeKey}
+		 WHERE ADMIN_ID = #{adminId}
+	</update>
+
+	<select id="getManagerInfo" parameterType="kr.co.rci.esign.admin.domain.AdminBean" resultType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.getManagerInfo][관리자정보] */
+		SELECT ADMIN_NO
+		     , ADMIN_ID
+		     , PASSWORD
+		     , REAL_NAME
+		     , LAST_LOGIN
+		     , ADMIN_EMAIL
+		     , ADMIN_HP1
+		     , ADMIN_HP2
+		     , ADMIN_HP3
+		     , ROLE_TP_CD
+		     , ENABLED
+		  FROM TB_ADMIN
+		 WHERE ADMIN_ID = #{adminId}
+	</select>
+
+	<select id="getManagerList" resultType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.getManagerList][관리자조회] */
+		SELECT ADMIN_ID
+		     , PASSWORD
+		     , REAL_NAME
+		     , LAST_LOGIN
+		     , ADMIN_EMAIL
+		     , ADMIN_HP1
+		     , ADMIN_HP2
+		     , ADMIN_HP3
+		     , ROLE_TP_CD
+		     , DECODE(ROLE_TP_CD, '01', '최고관리자', '02', '운영관리자', '03', 'FS관리자', '') ROLE_TP_CD_NM
+		     , ENABLED
+		     , REG_DT
+		     , REG_NO
+		     , MOD_DT
+		     , MOD_NO
+		  FROM TB_ADMIN
+		 WHERE 1=1
+		   AND ENABLED = 1
+		   <if test='scParam.roleTpCd != null and scParam.roleTpCd != "" '>
+		   AND ROLE_TP_CD = #{scParam.roleTpCd}
+		   </if>
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND REG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND TRUNC(REG_DT) <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (REAL_NAME LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR ADMIN_ID LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+		 ORDER BY REG_DT DESC
+		OFFSET #{pageable.offset} ROWS FETCH NEXT #{pageable.pageSize} ROWS ONLY
+	</select>
+
+	<select id="getManagerListCount" resultType="int">
+		/* [AdminMapper.xml][AdminMapper.getManagerListCount][관리자조회카운트] */
+		SELECT COUNT(*)
+		  FROM TB_ADMIN
+		 WHERE 1=1
+		   AND ENABLED = 1
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND REG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND REG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (REAL_NAME LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR ADMIN_ID LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+	</select>
+
+	<update id="setManagerDelete" parameterType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.setManagerDelete][관리자삭제] */
+		MERGE INTO TB_ADMIN T
+		USING (
+			<foreach collection="adminList" item="item" separator=" UNION ALL ">
+			SELECT #{item.adminId} AS ADMIN_ID FROM DUAL
+			</foreach>
+		) S
+		ON (T.ADMIN_ID = S.ADMIN_ID)
+		WHEN MATCHED THEN
+			UPDATE SET T.ENABLED = 0
+			         , T.MOD_DT = SYSDATE
+			         , T.MOD_NO = #{regNo}
+
+	</update>
+
+	<select id="getIdDupCheck" parameterType="kr.co.rci.esign.admin.domain.AdminBean" resultType="int">
+		/* [AdminMapper.xml][AdminMapper.getIdDupCheck][아이디중복체크] */
+		SELECT COUNT(ADMIN_ID) ID_COUNT
+		  FROM TB_ADMIN
+		 WHERE ADMIN_ID = #{adminId}
+	</select>
+
+	<insert id="setManagerInsert" parameterType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.setManagerInsert][관리자등록] */
+		INSERT INTO TB_ADMIN (ADMIN_NO
+		                   , ADMIN_ID
+						   , PASSWORD
+						   , REAL_NAME
+						   , LAST_LOGIN
+						   , ADMIN_EMAIL
+						   , ADMIN_HP1
+						   , ADMIN_HP2
+						   , ADMIN_HP3
+						   , ROLE_TP_CD
+						   , ENABLED
+						   , REG_DT
+						   , REG_NO
+						   , MOD_DT
+						   , MOD_NO)
+				      VALUES (SEQ_ADMIN_NO.NEXTVAL
+				           , #{adminId}
+				           , #{password}
+				           , #{realName}
+				           , NULL
+				           , #{adminEmail}
+				           , #{adminHp1, jdbcType=VARCHAR}
+				           , #{adminHp2, jdbcType=VARCHAR}
+				           , #{adminHp3, jdbcType=VARCHAR}
+				           , #{roleTpCd}
+				           , 1
+				           , SYSDATE
+				           , #{regNo}
+				           , SYSDATE
+				           , #{regNo})
+
+	</insert>
+
+	<update id="setManagerUpdate" parameterType="kr.co.rci.esign.admin.domain.AdminBean">
+		/* [AdminMapper.xml][AdminMapper.setManagerUpdate][관리자수정] */
+		UPDATE TB_ADMIN
+		   SET MOD_NO = #{regNo}
+		     , MOD_DT = SYSDATE
+		     <if test='realName != null and realName != ""'>
+		     , REAL_NAME = #{realName}
+		     </if>
+		     <if test='password != null and password != ""'>
+		     , PASSWORD = #{password}
+		     </if>
+			 <if test='roleTpCd != null and roleTpCd != ""'>
+			 , ROLE_TP_CD = #{roleTpCd}
+			 </if>
+		     , ADMIN_EMAIL = #{adminEmail}
+		     , ADMIN_HP1 = #{adminHp1, jdbcType=VARCHAR}
+			 , ADMIN_HP2 = #{adminHp2, jdbcType=VARCHAR}
+			 , ADMIN_HP3 = #{adminHp3, jdbcType=VARCHAR}
+		 WHERE ADMIN_ID = #{adminId}
+	</update>
+</mapper>

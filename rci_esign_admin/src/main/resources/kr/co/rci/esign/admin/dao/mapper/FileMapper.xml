@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 관리자 SQL Mapper -->
+<mapper namespace="kr.co.rci.esign.admin.dao.FileMapper">
+
+	<insert id="insertFile" parameterType="kr.co.rci.esign.admin.domain.FileInfo" >
+		<selectKey keyProperty="fileNo" resultType="String" order="AFTER">
+	    	select SEQ_FILE_NO.currval FROM DUAL
+	  	</selectKey>
+
+	  	/* [FileMapper.xml][FileMapper.insertFile][파일등록] */
+		INSERT INTO "FILE" (
+               FILE_NO
+             , REF_NO
+             , REF_KIND_CD
+			 , SUB_KIND_CD
+			 , KIND_CD
+			 , SET_CD
+			 , FILE_PATH
+			 , FILE_NM
+			 , FILE_NM_ORI
+			 , "SIZE"
+			 , CONT_TYPE
+			 , REG_DT
+		     , IS_USE
+		     )
+        VALUES (
+               SEQ_FILE_NO.nextval
+             , #{refNo, jdbcType=INTEGER}
+			 , #{refKindCd, jdbcType=VARCHAR}
+			 , #{subKindCd, jdbcType=VARCHAR}
+			 , #{kindCd, jdbcType=VARCHAR}
+			 , #{setCd, jdbcType=VARCHAR}
+			 , #{filePath}
+			 , #{fileNm}
+			 , #{orgFileNm}
+			 , #{fileSize}
+			 , #{contentType}
+			 , SYSDATE
+			 , 1
+			 )
+
+
+	</insert>
+
+	<select id="getFileInfo" parameterType="String" resultType="kr.co.rci.esign.admin.domain.FileInfo">
+		/* [FileMapper.xml][FileMapper.getFileInfo][파일조회] */
+		SELECT FILE_NO
+			 , REF_NO
+			 , REF_KIND_CD
+			 , SUB_KIND_CD
+			 , KIND_CD
+			 , SET_CD
+			 , FILE_PATH
+			 , FILE_NM
+			 , FILE_NM_ORI AS orgFileNm
+			 , "SIZE" AS fileSize
+			 , CONT_TYPE AS contentType
+		  FROM "FILE"
+		WHERE FILE_NO = #{fileSeq}
+	</select>
+
+</mapper>

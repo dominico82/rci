@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+<!-- Login Page -->
+<definition name="/views/auth/login" template="/WEB-INF/views/auth/login.jsp">
+	<put-attribute name="meta"				value="/WEB-INF/template/common/meta.jsp" />
+	<put-attribute name="styles"			value="/WEB-INF/template/common/styles.jsp" />
+	<put-attribute name="scripts"			value="/WEB-INF/template/common/scripts.jsp" />
+</definition>
+
+<!-- <definition name="/auth/otp" template="/WEB-INF/views/auth/otp.jsp"> -->
+<!-- 	<put-attribute name="meta"				value="/WEB-INF/template/common/meta.jsp" /> -->
+<!-- 	<put-attribute name="styles"			value="/WEB-INF/template/common/styles.jsp" /> -->
+<!-- 	<put-attribute name="scripts"			value="/WEB-INF/template/common/scripts.jsp" /> -->
+<!-- </definition> -->
+</tiles-definitions>

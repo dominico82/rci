@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.rci.esign.admin.dao.UserMapper">
+
+	<sql id="getUserListWhere">
+	</sql>
+
+	<select id="getUserList" resultType="kr.co.rci.esign.admin.domain.UserBean">
+		/* [UserMapper.xml][UserMapper.getUserList][사용자정보조회] */
+		SELECT USR_NO
+		     , KIND_CD
+		     , LOGIN_ID
+			 , PWD
+			 , USER_NM
+			 , EMAIL
+			 , HP_1
+			 , HP_2
+			 , HP_3
+			 , TEL
+			 , SEX_CD
+			 , BORN_DT
+			 , STAT_CD
+			 , LEAVE_WHY
+			 , LEAVE_DT
+			 , MEMO
+			 , REG_DT
+			 , REG_USR_NO
+			 , MOD_DT
+			 , MOD_USR_NO
+			 , IS_USE
+			 , DEPT_CD
+			 , (SELECT DEPT_NM FROM TB_DEPT WHERE DEPT_CD = T.DEPT_CD AND ROWNUM = 1) DEPT_NM
+			 , BRAN_CD
+			 , (SELECT BRANCH_NM FROM TB_BRANCH WHERE BRANCH_CD = T.BRAN_CD AND ROWNUM = 1) BRAN_NM
+			 , PWD_RST
+			 , PWD_RST_DT
+			 , (SELECT MAX(LOG_DT) FROM LOG WHERE LOG_USER = T.LOGIN_ID) LOG_DT
+		  FROM USR T
+		 WHERE 1=1
+		   AND IS_USE = 1
+		   AND PWD IS NOT NULL
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND REG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND REG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (USER_NM LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_2 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_3 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+		 ORDER BY USR_NO
+		OFFSET #{pageable.offset} ROWS FETCH NEXT #{pageable.pageSize} ROWS ONLY
+	</select>
+
+	<select id="getUserListCount" resultType="int">
+		/* [UserMapper.xml][UserMapper.getUserListCount][사용자카운트] */
+		SELECT COUNT(*)
+		  FROM USR
+		 WHERE 1=1
+		   AND IS_USE = 1
+		   AND PWD IS NOT NULL
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND REG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND REG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (USER_NM LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_2 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_3 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+	</select>
+
+	<select id="getUserLoginHist" resultType="kr.co.rci.esign.admin.domain.UserBean">
+		/* [UserMapper.xml][UserMapper.getUserLoginHist][로그인이력] */
+		SELECT T1.LOG_NO
+		     , T1.LOG_CD
+		     , T1.LOG_IP
+		     , T1.LOG_URL
+		     , T1.LOG_REQ
+		     , T1.LOG_RES
+		     , T1.LOG_DEVICE
+		     , T1.LOG_USER
+		     , T1.LOG_DT
+		     , T2.USR_NO
+		     , T2.USER_NM
+		     , T2.HP_1
+		     , T2.HP_2
+		     , T2.HP_3
+		     , T2.DEPT_CD
+			 , (SELECT DEPT_NM FROM TB_DEPT WHERE DEPT_CD = T2.DEPT_CD AND ROWNUM = 1) DEPT_NM
+			 , BRAN_CD
+			 , (SELECT BRANCH_NM FROM TB_BRANCH WHERE BRANCH_CD = T2.BRAN_CD AND ROWNUM = 1) BRAN_NM
+		  FROM LOG T1
+		     , USR T2
+		 WHERE T1.LOG_USER = T2.LOGIN_ID
+		   AND T2.IS_USE = 1
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND T1.LOG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND T1.LOG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (T2.USER_NM LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR T2.HP_2 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR T2.HP_3 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+	</select>
+
+	<select id="getUserLoginHistCount" resultType="int">
+		/* [UserMapper.xml][UserMapper.getUserLoginHistCount][로그인이력전체카운트] */
+		SELECT COUNT(*)
+		  FROM LOG T1
+		     , USR T2
+		 WHERE T1.LOG_USER = T2.LOGIN_ID
+		   AND T2.IS_USE = 1
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND T1.LOG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND T1.LOG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (T2.USER_NM LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR T2.HP_2 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR T2.HP_3 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+	</select>
+
+	<select id="getUserDormantList" resultType="kr.co.rci.esign.admin.domain.UserBean">
+		/* [UserMapper.xml][UserMapper.getUserDormantList][전체사용자조회] */
+		SELECT T1.USR_NO
+		     , T1.KIND_CD
+		     , T1.LOGIN_ID
+			 , T1.PWD
+			 , T1.USER_NM
+			 , T1.EMAIL
+			 , T1.HP_1
+			 , T1.HP_2
+			 , T1.HP_3
+			 , T1.TEL
+			 , T1.SEX_CD
+			 , T1.BORN_DT
+			 , T1.STAT_CD
+			 , T1.LEAVE_WHY
+			 , T1.LEAVE_DT
+			 , T1.MEMO
+			 , T1.REG_DT
+			 , T1.REG_USR_NO
+			 , T1.MOD_DT
+			 , T1.MOD_USR_NO
+			 , T1.IS_USE
+			 , T1.DEPT_CD
+			 , (SELECT DEPT_NM FROM TB_DEPT WHERE DEPT_CD = T1.DEPT_CD AND ROWNUM = 1) DEPT_NM
+			 , T1.BRAN_CD
+			 , (SELECT BRANCH_NM FROM TB_BRANCH WHERE BRANCH_CD = T1.BRAN_CD AND ROWNUM = 1) BRAN_NM
+			 , T1.PWD_RST
+			 , T1.PWD_RST_DT
+			 , DECODE(T1.STAT_CD, '01', '일반', '02', '휴면', '03', '퇴사', '일반') STAT_CD_NM
+			 , T2.LOG_DT LOG_DT
+		  FROM USR T1
+		     , (
+				SELECT LOG_USER
+				     , MAX(LOG_DT) LOG_DT
+				  FROM LOG
+				 GROUP BY LOG_USER
+		       ) T2
+		 WHERE T1.LOGIN_ID = T2.LOG_USER(+)
+		   AND T1.IS_USE = 1
+		   AND T1.STAT_CD = '02'
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND T2.LOG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND T2.LOG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (T1.USER_NM LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR T1.HP_2 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR T1.HP_3 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+		 ORDER BY T1.USR_NO
+		OFFSET #{pageable.offset} ROWS FETCH NEXT #{pageable.pageSize} ROWS ONLY
+	</select>
+
+	<select id="getUserDormantListCount" resultType="int">
+		/* [UserMapper.xml][UserMapper.getUserAllListCount][전체사용자카운트] */
+		SELECT COUNT(*)
+		  FROM USR
+		 WHERE 1=1
+		   AND IS_USE = 1
+		   AND STAT_CD = '02'
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND REG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND REG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (USER_NM LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_2 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_3 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+	</select>
+
+	<update id="setUserStatCdUpdate" parameterType="kr.co.rci.esign.admin.domain.UserBean">
+		/* [UserMapper.xml][UserMapper.setUserStatCdUpdate][사용자상태업데이트] */
+		MERGE INTO USR T
+		USING (
+			<foreach collection="userList" item="item" separator=" UNION ALL ">
+			SELECT #{item.usrNo} USR_NO, #{item.statCd} STAT_CD FROM DUAL
+			</foreach>
+		) S
+		ON (T.USR_NO = S.USR_NO)
+		WHEN MATCHED THEN
+			UPDATE SET T.STAT_CD = S.STAT_CD
+			         , T.MOD_DT = SYSDATE
+	</update>
+
+	<update id="setUserIsUseUpdate" parameterType="kr.co.rci.esign.admin.domain.UserBean">
+		/* [UserMapper.xml][UserMapper.setUserIsUseUpdate][사용자 사용여부 업데이트] */
+		MERGE INTO USR T
+		USING (
+			<foreach collection="userList" item="item" separator=" UNION ALL ">
+			SELECT #{item.usrNo} USR_NO, #{item.isUse} IS_USE FROM DUAL
+			</foreach>
+		) S
+		ON (T.USR_NO = S.USR_NO)
+		WHEN MATCHED THEN
+			UPDATE SET T.IS_USE = S.IS_USE
+			         , T.MOD_DT = SYSDATE
+	</update>
+
+	<select id="getUserAllList" resultType="kr.co.rci.esign.admin.domain.UserBean">
+		/* [UserMapper.xml][UserMapper.getUserTotalList][전체사용자조회] */
+		SELECT USR_NO
+		     , KIND_CD
+		     , LOGIN_ID
+			 , PWD
+			 , USER_NM
+			 , EMAIL
+			 , HP_1
+			 , HP_2
+			 , HP_3
+			 , TEL
+			 , SEX_CD
+			 , BORN_DT
+			 , STAT_CD
+			 , LEAVE_WHY
+			 , LEAVE_DT
+			 , MEMO
+			 , REG_DT
+			 , REG_USR_NO
+			 , MOD_DT
+			 , MOD_USR_NO
+			 , IS_USE
+			 , DEPT_CD
+			 , (SELECT DEPT_NM FROM TB_DEPT WHERE DEPT_CD = T.DEPT_CD AND ROWNUM = 1) DEPT_NM
+			 , BRAN_CD
+			 , (SELECT BRANCH_NM FROM TB_BRANCH WHERE BRANCH_CD = T.BRAN_CD AND ROWNUM = 1) BRAN_NM
+			 , PWD_RST
+			 , PWD_RST_DT
+		  FROM USR T
+		 WHERE 1=1
+		   AND IS_USE = 1
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND REG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND REG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (USER_NM LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_2 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_3 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+		 ORDER BY USR_NO
+		OFFSET #{pageable.offset} ROWS FETCH NEXT #{pageable.pageSize} ROWS ONLY
+	</select>
+
+	<select id="getUserAllListCount" resultType="int">
+		/* [UserMapper.xml][UserMapper.getUserAllListCount][전체사용자카운트] */
+		SELECT COUNT(*)
+		  FROM USR
+		 WHERE 1=1
+		   AND IS_USE = 1
+		   <if test='scParam.schStartDate != null and scParam.schStartDate != "" '>
+		   AND REG_DT <![CDATA[ >= ]]> #{scParam.schStartDate}
+		   </if>
+		   <if test='scParam.schEndDate != null and scParam.schEndDate != "" '>
+		   AND REG_DT <![CDATA[ <= ]]> #{scParam.schEndDate}
+		   </if>
+		   <if test='scParam.searchWord != null and scParam.searchWord != ""'>
+		   AND (USER_NM LIKE #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_2 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%'
+		    OR HP_3 LIKE '%' || #{scParam.searchWord, jdbcType=VARCHAR} || '%')
+		   </if>
+	</select>
+
+</mapper>
